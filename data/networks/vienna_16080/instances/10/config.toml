@@ -1,0 +1,14 @@
+[network]
+distances_file = ../data/networks/vienna_16080/distances.txt
+depot = 0
+
+[environment]
+time_horizon_max = 100
+max_service_time = 40
+
+[vehicle]
+vehicle_velocity = 12
+
+[information_model]
+requests_file = ../data/networks/vienna_16080/requests.txt
+travel_times_file = ../data/networks/vienna_16080/travel_times.txt
