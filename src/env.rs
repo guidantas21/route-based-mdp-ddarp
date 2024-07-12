@@ -1,14 +1,18 @@
 use crate::config::Config;
+use crate::vehicle::Vehicle;
+use crate::request::Request;
 
 #[derive(Debug)]
 pub struct Environment<'a>
 {
     config: &'a Config,
     time: f32,
+    vehicle: Vehicle<'a>,
     objective: f32,
     decision_point: usize,
     approx_travel_time_matrix: Vec<Vec<f32>>,
-    num_locations: usize
+    num_locations: usize,
+    outstanding_requests: Vec<Request>
 }
 
 
@@ -31,10 +35,12 @@ impl<'a> Environment<'a>
         Self {
             config,
             time: 0.0,
+            vehicle: Vehicle::new(config),
             objective: 0.0,
             decision_point: 0,
             approx_travel_time_matrix,
             num_locations,
+            outstanding_requests: Vec::new()
         }
     }
     

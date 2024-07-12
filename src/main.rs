@@ -1,8 +1,12 @@
 mod config;
 mod env;
+mod vehicle;
+mod request;
+mod info_model;
 
 use crate::config::Config;
 use crate::env::Environment;
+use crate::info_model::InformationModel;
 
 fn main() 
 {
@@ -25,8 +29,14 @@ fn main()
     println!("{:#?}", config);
 
     let mut env = Environment::new(&config);
-
+    
     println!("{:#?}", env);
     
-    println!("{:#?}", config);
+    let travel_time_matrix: Vec<Vec<f32>> = vec![
+        vec![0.0, 2.0, 3.0],
+        vec![2.0, 0.0, 1.8],
+        vec![3.0, 1.8, 0.0],
+    ];
+
+    let mut info_model
 }
