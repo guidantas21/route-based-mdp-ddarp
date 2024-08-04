@@ -27,4 +27,14 @@ impl<'a> Network<'a> {
             approx_travel_time_matrix,
         }
     }
+
+    #[inline(always)]
+    pub fn distance(&self, i: usize, j: usize) -> f32 {
+        self.distance_matrix[i][j]
+    }
+
+    #[inline(always)]
+    pub fn approx_travel_time(&self, i: usize, j: usize) -> f32 {
+        self.approx_travel_time[i][j]
+    }
 }
