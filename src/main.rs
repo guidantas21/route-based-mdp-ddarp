@@ -1,42 +1,29 @@
-mod config;
-mod env;
-mod vehicle;
-mod request;
-mod info_model;
+mod mdp;
 
-use crate::config::Config;
-use crate::env::Environment;
-use crate::info_model::InformationModel;
+use std::error::Error;
 
-fn main() 
-{
-    let time_horizon_max: f32 = 100.0;
-    let vehicle_velocity: f32 = 12.0; 
-    let max_service_time: f32 = 40.0;
-    let distance_matrix: Vec<Vec<f32>> = vec![
-        vec![0.0, 1.0, 2.0],
-        vec![1.0, 0.0, 1.5],
-        vec![2.0, 1.5, 0.0],
-    ];
+use crate::mdp::{
+    config::{Config, EnvironmentConfig, InformationModelConfig, NetworkConfig, VehicleConfig},
+    environment::Environment,
+    info_model::InformationModel,
+    network::Network,
+    request::Request,
+    request_list::RequestList,
+    vehicle::Vehicle,
+};
 
-    let config = Config::new(
-        time_horizon_max, 
-        max_service_time, 
-        vehicle_velocity, 
-        distance_matrix
-    );
-    
-    println!("{:#?}", config);
+fn main() -> Result<(), Box<dyn Error>> {
+    let config = Config::load_from_file("data/instances/test/config.toml")?;
 
-    let mut env = Environment::new(&config);
-    
+    let vehicle = Vehicle::new(config.get_vehicle());
+
+    let network = Network::new(config.get_network(), vehicle.get_average_velocity());
+
+    let env = Environment::new(config.get_environment(), &network, &vehicle);
     println!("{:#?}", env);
-    
-    let travel_time_matrix: Vec<Vec<f32>> = vec![
-        vec![0.0, 2.0, 3.0],
-        vec![2.0, 0.0, 1.8],
-        vec![3.0, 1.8, 0.0],
-    ];
 
-    let mut info_model
+    let info_model = InformationModel::new(config.get_information_model());
+    println!("{:#?}", info_model);
+
+    Ok(())
 }

@@ -1,0 +1,15 @@
+[environment]
+max_service_time = 30.0
+planning_horizon = 86400.0
+
+[network]
+num_locations = 5
+distance_matrix_file = "data/networks/random_uniform_5_10_100/distance_matrix.txt"
+depot = 0
+
+[vehicle]
+average_velocity = 5
+
+[information_model]
+travel_time_matrix_file = "data/instances/test/travel_time_matrix.txt"
+requests_file = "data/instances/test/requests.json"

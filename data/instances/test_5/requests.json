@@ -1,0 +1,19 @@
+{
+    "number_requests": 2,
+    "requests": [
+        {
+            "reveal_time": 10,
+            "pickup_location": 1,
+            "drop_off_location": 2,
+            "earliest_tw": 20,
+            "latest_tw": 200
+        },
+        {
+            "reveal_time": 20,
+            "pickup_location": 3,
+            "drop_off_location": 4,
+            "earliest_tw": 30,
+            "latest_tw": 300
+        }
+    ]
+}
