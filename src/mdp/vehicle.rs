@@ -1,20 +1,28 @@
-use crate::mdp::config::VehicleConfig;
+use crate::mdp::{config::VehicleConfig, request::Request, route_plan::RoutePlan};
+
+#[derive(Debug)]
+pub struct InProcessRequest {
+    request: Request,
+    pick_time: f32,
+}
 
 #[derive(Debug)]
 pub struct Vehicle<'a> {
     config: &'a VehicleConfig,
-    route: Vec<usize>,
+    route_plan: RoutePlan,
     arrival_time: f32,
     location: usize,
+    in_process_requests: Vec<InProcessRequest>,
 }
 
 impl<'a> Vehicle<'a> {
     pub fn new(config: &'a VehicleConfig) -> Self {
         Self {
             config,
-            route: Vec::new(),
+            route_plan: RoutePlan::new(),
             arrival_time: 0.0,
             location: 0,
+            in_process_requests: Vec::new(),
         }
     }
 
@@ -31,18 +39,7 @@ impl<'a> Vehicle<'a> {
     }
 
     #[inline(always)]
-    pub fn get_route(&self) -> Vec<usize> {
-        self.route.clone()
-    }
-
     pub fn get_average_velocity(&self) -> f32 {
         self.config.get_average_velocity()
-    }
-
-    // SETTERS /////
-
-    #[inline(always)]
-    pub fn set_route(&mut self, new_route: Vec<usize>) {
-        self.route = new_route;
     }
 }

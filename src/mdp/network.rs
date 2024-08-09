@@ -35,6 +35,6 @@ impl<'a> Network<'a> {
 
     #[inline(always)]
     pub fn approx_travel_time(&self, i: usize, j: usize) -> f32 {
-        self.approx_travel_time[i][j]
+        self.approx_travel_time_matrix[i][j]
     }
 }

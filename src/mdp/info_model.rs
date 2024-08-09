@@ -24,6 +24,7 @@ impl<'a> InformationModel<'a> {
     }
 
     // REVEAL STOCHASTIC INFORMATION /////
+    
     #[inline(always)]
     pub fn reveal_requests(&mut self, time: f32) -> Vec<Request> {
         self.requests.get_requests_at(time)

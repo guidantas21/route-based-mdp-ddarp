@@ -1,4 +1,4 @@
-use crate::mdp::{config::EnvironmentConfig, network::Network, vehicle::Vehicle};
+use crate::mdp::{config::EnvironmentConfig, network::Network, vehicle::Vehicle, request::Request};
 
 #[derive(Debug)]
 pub struct Environment<'a> {
@@ -8,6 +8,7 @@ pub struct Environment<'a> {
     time: f32,
     objective: f32,
     decision_point: usize,
+    outstanding_requests: Vec<Request>,
 }
 
 impl<'a> Environment<'a> {
@@ -23,6 +24,7 @@ impl<'a> Environment<'a> {
             time: 0.0,
             objective: 0.0,
             decision_point: 0,
+            outstanding_requests: Vec::new(),
         }
     }
 
@@ -42,4 +44,18 @@ impl<'a> Environment<'a> {
     pub fn get_decision_point(&self) -> usize {
         self.decision_point
     }
+
+    // MDP METHODS /////
+
+    pub fn init(&mut self) {
+        self.decision_point = 0;
+        self.time = 0.0;
+        self.objective = 0.0;
+    }
+
+    pub fn update(&self, route: Vec<Request>) {
+        
+    }
+
+    pub fn step() {}
 }
