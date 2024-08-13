@@ -9,9 +9,9 @@ pub struct InProcessRequest {
 #[derive(Debug)]
 pub struct Vehicle<'a> {
     config: &'a VehicleConfig,
-    route_plan: RoutePlan,
-    arrival_time: f32,
-    location: usize,
+    pub route_plan: RoutePlan,
+    pub arrival_time: f32,
+    pub location: usize,
     in_process_requests: Vec<InProcessRequest>,
 }
 
@@ -27,19 +27,15 @@ impl<'a> Vehicle<'a> {
     }
 
     // GETTERS /////
-
-    #[inline(always)]
-    pub fn get_location(&self) -> usize {
-        self.location
-    }
-
-    #[inline(always)]
-    pub fn get_arrival_time(&self) -> f32 {
-        self.arrival_time
-    }
-
     #[inline(always)]
     pub fn get_average_velocity(&self) -> f32 {
         self.config.get_average_velocity()
+    }
+
+    // METHODS /////
+
+    pub fn update(&mut self, arrival_time: f32) {
+        self.arrival_time = arrival_time;
+        self.location = self.route_plan.get_next_location();
     }
 }

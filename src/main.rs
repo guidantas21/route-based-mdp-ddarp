@@ -15,11 +15,11 @@ use crate::mdp::{
 fn main() -> Result<(), Box<dyn Error>> {
     let config = Config::load_from_file("data/instances/test/config.toml")?;
 
-    let vehicle = Vehicle::new(config.get_vehicle());
+    let mut vehicle = Vehicle::new(config.get_vehicle());
 
     let network = Network::new(config.get_network(), vehicle.get_average_velocity());
 
-    let env = Environment::new(config.get_environment(), &network, &vehicle);
+    let env = Environment::new(config.get_environment(), &network, &mut vehicle);
     println!("{:#?}", env);
 
     let info_model = InformationModel::new(config.get_information_model());
