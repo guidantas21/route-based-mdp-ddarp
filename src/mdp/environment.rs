@@ -1,5 +1,8 @@
 use crate::mdp::{
-    config::EnvironmentConfig, network::Network, request::Request, route_plan::RoutePlan,
+    config::EnvironmentConfig,
+    network::Network,
+    request::Request,
+    route_plan::{RouteNode, RoutePlan},
     vehicle::Vehicle,
 };
 
@@ -7,7 +10,7 @@ use crate::mdp::{
 pub struct Environment<'a> {
     config: &'a EnvironmentConfig,
     network: &'a Network<'a>,
-    vehicle: &'a mut Vehicle<'a>,
+    pub vehicle: &'a mut Vehicle<'a>,
     time: f32,
     objective: f32,
     decision_point: usize,
@@ -48,12 +51,22 @@ impl<'a> Environment<'a> {
         self.decision_point
     }
 
-    // MDP METHODS /////
+    // METHODS /////
 
+    #[inline(always)]
     pub fn init(&mut self) {
         self.decision_point = 0;
         self.time = 0.0;
         self.objective = 0.0;
+
+        let depot_node = RouteNode::new_depot(self.network.get_depot());
+
+        self.vehicle.route_plan.route = vec![depot_node];
+    }
+
+    #[inline(always)]
+    pub fn is_horizon_reached(&self) -> bool {
+        self.time >= self.config.get_planning_horizon()
     }
 
     pub fn update(&mut self, revealed_requests: &mut Vec<Request>, revealed_travel_time: f32) {
@@ -65,9 +78,13 @@ impl<'a> Environment<'a> {
     pub fn step(&mut self, route_plan: RoutePlan) {
         self.vehicle.route_plan = route_plan;
 
-        if self.vehicle.route_plan.is_empty() == false {
-            self.objective += self.vehicle.route_plan.get_reward();
-        } else {
+        self.vehicle.route_plan.reward = self.vehicle.route_plan.reward_time_constraints(
+            self.vehicle.get_num_visited_locations(),
+            self.config.get_planning_horizon(),
+        );
+        self.objective -= self.vehicle.route_plan.reward;
+
+        if self.vehicle.get_num_visited_locations() + 1 == self.vehicle.route_plan.route.len() {
             self.time += 1.0;
         }
         self.decision_point += 1;

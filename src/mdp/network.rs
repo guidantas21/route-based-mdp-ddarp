@@ -28,6 +28,10 @@ impl<'a> Network<'a> {
         }
     }
 
+    pub fn get_depot(&self) -> usize {
+        self.config.get_depot()
+    }
+
     #[inline(always)]
     pub fn distance(&self, i: usize, j: usize) -> f32 {
         self.distance_matrix[i][j]

@@ -1,12 +1,36 @@
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
+use std::cmp::Ordering;
 
-#[derive(Debug, Deserialize, Serialize, Clone)]
+#[derive(Debug, Deserialize)]
+pub struct RequestInstance {
+    pub number_requests: usize,
+    pub requests: Vec<Request>,
+}
+
+#[derive(Debug, Deserialize, Clone, PartialEq)]
 pub struct Request {
     reveal_time: f32,
     pickup_location: usize,
     drop_off_location: usize,
     earliest_tw: f32,
     latest_tw: f32,
+}
+
+impl Eq for Request {}
+
+impl Ord for Request {
+    fn cmp(&self, other: &Self) -> Ordering {
+        other
+            .reveal_time
+            .partial_cmp(&self.reveal_time)
+            .unwrap_or(Ordering::Equal)
+    }
+}
+
+impl PartialOrd for Request {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        Some(self.cmp(other))
+    }
 }
 
 impl Request {
